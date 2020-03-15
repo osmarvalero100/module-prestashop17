@@ -6,6 +6,7 @@ if (!defined('_PS_VERSION_')) {
 
 /**
  * Módulo de ejemplo para Prestashop 1.7
+ * iconos: https://www.fatcow.com/free-icons
  */
 class Ejemplo extends Module
 {
