@@ -27,16 +27,23 @@ class Ejemplo extends Module
   public function install()
   {
     if (!parent::install() ||
-        !Configuration::updateValue('EXAMPLE_VAR', 'Contenido de la variable'))
+    !Configuration::updateValue('EXAMPLE_VAR', 'Contenido de la variable') ||
+    !$this->registerHook('displayReassurance') ||
+    !$this->registerHook('displayFooter') ||
+    !$this->registerHook('ejemploCustomHook')) {
       return false;
-    return true;
+    } else {
+      return true;
+    }
   }
   public function uninstall()
   {
     if (!parent::uninstall() ||
-        !Configuration::deleteByName('EXAMPLE_VAR'))
+    !Configuration::deleteByName('EXAMPLE_VAR')){
       return false;
-    return true;
+    } else {
+      return true;
+    }
   }
   /*
   * Muestra el botón configurar módulo
@@ -52,5 +59,26 @@ class Ejemplo extends Module
     $varValue = Configuration::get('EXAMPLE_VAR');
     $this->smarty->assign('varValue', $varValue);
     return $this->display(__FILE__, 'configure.tpl');
+  }
+  /*
+  * Insertará este Hook en la página de producto
+  */
+  public function hookDisplayReassurance($params)
+  {
+    return $this->display(__FILE__, 'productAdditionalInfo.tpl');
+  }
+  /*
+  * Hook personalizado
+  */
+  public function hookEjemploCustomHook($params) {
+    return $this->display(__FILE__, 'customHook.tpl');
+  }
+  /*
+  * Insertará este Hook en el pie de página
+  */
+  public function hookDisplayFooter($params) {
+    $varValue = Configuration::get('EXAMPLE_VAR');
+    $this->context->smarty->assign('varValue', $varValue);
+    return $this->display(__FILE__, 'footer.tpl');
   }
 }
